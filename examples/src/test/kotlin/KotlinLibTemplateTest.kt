@@ -1,9 +1,9 @@
-package BASE_GROUP_ID
+package io.toolisticon.jmolecules.archunit
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class KotlinLibTemplateITest {
+internal class KotlinLibTemplateTest {
 
   @Test
   fun `dummy test`() {

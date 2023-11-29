@@ -1,4 +1,4 @@
-package BASE_GROUP_ID
+package io.toolisticon.jmolecules.archunit
 
 object KotlinLibTemplate {
 
