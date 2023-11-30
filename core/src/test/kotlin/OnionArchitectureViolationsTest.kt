@@ -16,7 +16,7 @@ class OnionArchitectureViolationsTest {
   }
 
   @ArchTest
-  fun `checks onion simplified`(classes: JavaClasses) {
+  fun `detect onion simplified violations`(classes: JavaClasses) {
     val result = ensureOnionSimplified(setOf("JMolecules")).evaluate(classes)
     assertThat(result.hasViolation()).isTrue()
     assertThat(result.failureReport.details).containsExactlyInAnyOrderElementsOf(
@@ -34,7 +34,7 @@ class OnionArchitectureViolationsTest {
   }
 
   @ArchTest
-  fun `checks onion classic`(classes: JavaClasses) {
+  fun `detect onion classic violations`(classes: JavaClasses) {
     val result = ensureOnionClassical(setOf("JMolecules")).evaluate(classes)
     assertThat(result.hasViolation()).isTrue()
     assertThat(result.failureReport.details).containsExactlyInAnyOrderElementsOf(

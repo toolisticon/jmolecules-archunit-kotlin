@@ -2,6 +2,7 @@ package io.toolisticon.jmolecules.archunit
 
 import com.tngtech.archunit.library.Architectures
 import io.toolisticon.jmolecules.archunit.IsLayerType.Companion.layerType
+import io.toolisticon.jmolecules.archunit.IsLayerType.Companion.layerTypeByClassMethod
 import org.jmolecules.architecture.cqrs.Command
 import org.jmolecules.architecture.cqrs.CommandDispatcher
 import org.jmolecules.architecture.cqrs.CommandHandler
@@ -21,7 +22,7 @@ object CqrsEsStrict {
   private const val CQRS_QUERY_MODEL = "Query model"
 
 
-  fun ensureCqrsStrict(packageMarkerSimpleClassNames: Set<String> = emptySet()): Architectures.LayeredArchitecture {
+  fun ensureCqrsEsStrict(packageMarkerSimpleClassNames: Set<String> = emptySet()): Architectures.LayeredArchitecture {
     return Architectures
       .layeredArchitecture()
       .consideringOnlyDependenciesInLayers()
@@ -29,7 +30,7 @@ object CqrsEsStrict {
 
       .layer(CQRS_COMMAND_DISPATCHER)
       .definedBy(
-        layerType(
+        layerTypeByClassMethod(
           definedByAnnotation = CommandDispatcher::class.java,
           packageMarkerSimpleClassNames = packageMarkerSimpleClassNames
         )
@@ -37,16 +38,8 @@ object CqrsEsStrict {
 
       .layer(CQRS_COMMAND_HANDLER)
       .definedBy(
-        layerType(
-          definedByAnnotation = CommandHandler::class.java, // FIXME -> Bullshit, the handler is a method inside a class
-          packageMarkerSimpleClassNames = packageMarkerSimpleClassNames
-        )
-      )
-
-      .layer(CQRS_QUERY_MODEL)
-      .definedBy(
-        layerType(
-          definedByAnnotation = QueryModel::class.java,
+        layerTypeByClassMethod(
+          definedByAnnotation = CommandHandler::class.java,
           packageMarkerSimpleClassNames = packageMarkerSimpleClassNames
         )
       )
@@ -55,6 +48,14 @@ object CqrsEsStrict {
       .definedBy(
         layerType(
           definedByAnnotation = Command::class.java,
+          packageMarkerSimpleClassNames = packageMarkerSimpleClassNames
+        )
+      )
+
+      .layer(CQRS_QUERY_MODEL)
+      .definedBy(
+        layerType(
+          definedByAnnotation = QueryModel::class.java,
           packageMarkerSimpleClassNames = packageMarkerSimpleClassNames
         )
       )
@@ -69,16 +70,16 @@ object CqrsEsStrict {
 
       .layer(CQRS_DOMAIN_EVENT_PUBLISHER)
       .definedBy(
-        layerType(
-          definedByAnnotation = DomainEventPublisher::class.java, // FIXME: Bullshit, publisher is a method inside a class
+        layerTypeByClassMethod(
+          definedByAnnotation = DomainEventPublisher::class.java,
           packageMarkerSimpleClassNames = packageMarkerSimpleClassNames
         )
       )
 
       .layer(CQRS_DOMAIN_EVENT_HANDLER)
       .definedBy(
-        layerType(
-          definedByAnnotation = DomainEventHandler::class.java, // FIXME: Bullshit, publisher is a method inside a class
+        layerTypeByClassMethod(
+          definedByAnnotation = DomainEventHandler::class.java,
           packageMarkerSimpleClassNames = packageMarkerSimpleClassNames
         )
       )
